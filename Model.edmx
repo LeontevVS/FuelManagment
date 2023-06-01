@@ -1,0 +1,534 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="Хранилище dbFuelManagmentModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Drivers">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="70" Nullable="false" />
+        </EntityType>
+        <EntityType Name="FillOnCards">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="WaybillId" Type="int" Nullable="false" />
+          <Property Name="DriverName" Type="nvarchar" MaxLength="70" Nullable="false" />
+          <Property Name="FuelCount" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="DiselPrice" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="Date" Type="datetime" Nullable="false" />
+          <Property Name="VehicleLicensePlate" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="GasStationId" Type="int" Nullable="false" />
+          <Property Name="Amount" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+        </EntityType>
+        <EntityType Name="FuelCards">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="BeginDate" Type="date" Nullable="false" />
+          <Property Name="EndDate" Type="date" Nullable="false" />
+          <Property Name="PinCode" Type="decimal" Precision="4" Scale="0" Nullable="false" />
+          <Property Name="DriverId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="FuelCompanies">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="DiselPrice" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+        </EntityType>
+        <EntityType Name="GasStations">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Address" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="FuelCompanyId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Login" Type="nchar" MaxLength="15" Nullable="false" />
+          <Property Name="Password" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="Role" Type="nvarchar" MaxLength="25" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Vehicles">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="LicensePlate" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="Brand" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="FuelConsumption" Type="decimal" Precision="12" Scale="2" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Waybills">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Number" Type="int" Nullable="false" />
+          <Property Name="Date" Type="date" Nullable="false" />
+          <Property Name="DateOfCompletion" Type="date" Nullable="false" />
+          <Property Name="VehicleId" Type="int" Nullable="false" />
+          <Property Name="DriverId" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_FillOnCards_GasStations">
+          <End Role="GasStations" Type="Self.GasStations" Multiplicity="1" />
+          <End Role="FillOnCards" Type="Self.FillOnCards" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="GasStations">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="FillOnCards">
+              <PropertyRef Name="GasStationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FillOnCards_Waybills">
+          <End Role="Waybills" Type="Self.Waybills" Multiplicity="1" />
+          <End Role="FillOnCards" Type="Self.FillOnCards" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Waybills">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="FillOnCards">
+              <PropertyRef Name="WaybillId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FuelCards_Drivers">
+          <End Role="Drivers" Type="Self.Drivers" Multiplicity="1" />
+          <End Role="FuelCards" Type="Self.FuelCards" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Drivers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="FuelCards">
+              <PropertyRef Name="DriverId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_GasStations_FuelCompanies">
+          <End Role="FuelCompanies" Type="Self.FuelCompanies" Multiplicity="1" />
+          <End Role="GasStations" Type="Self.GasStations" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FuelCompanies">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="GasStations">
+              <PropertyRef Name="FuelCompanyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Waybills_Drivers">
+          <End Role="Drivers" Type="Self.Drivers" Multiplicity="1" />
+          <End Role="Waybills" Type="Self.Waybills" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Drivers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Waybills">
+              <PropertyRef Name="DriverId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Waybills_Vehicles">
+          <End Role="Vehicles" Type="Self.Vehicles" Multiplicity="1" />
+          <End Role="Waybills" Type="Self.Waybills" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Vehicles">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Waybills">
+              <PropertyRef Name="VehicleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Хранилище dbFuelManagmentModelContainer">
+          <EntitySet Name="Drivers" EntityType="Self.Drivers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="FillOnCards" EntityType="Self.FillOnCards" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="FuelCards" EntityType="Self.FuelCards" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="FuelCompanies" EntityType="Self.FuelCompanies" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="GasStations" EntityType="Self.GasStations" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Vehicles" EntityType="Self.Vehicles" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Waybills" EntityType="Self.Waybills" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_FillOnCards_GasStations" Association="Self.FK_FillOnCards_GasStations">
+            <End Role="GasStations" EntitySet="GasStations" />
+            <End Role="FillOnCards" EntitySet="FillOnCards" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FillOnCards_Waybills" Association="Self.FK_FillOnCards_Waybills">
+            <End Role="Waybills" EntitySet="Waybills" />
+            <End Role="FillOnCards" EntitySet="FillOnCards" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FuelCards_Drivers" Association="Self.FK_FuelCards_Drivers">
+            <End Role="Drivers" EntitySet="Drivers" />
+            <End Role="FuelCards" EntitySet="FuelCards" />
+          </AssociationSet>
+          <AssociationSet Name="FK_GasStations_FuelCompanies" Association="Self.FK_GasStations_FuelCompanies">
+            <End Role="FuelCompanies" EntitySet="FuelCompanies" />
+            <End Role="GasStations" EntitySet="GasStations" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Waybills_Drivers" Association="Self.FK_Waybills_Drivers">
+            <End Role="Drivers" EntitySet="Drivers" />
+            <End Role="Waybills" EntitySet="Waybills" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Waybills_Vehicles" Association="Self.FK_Waybills_Vehicles">
+            <End Role="Vehicles" EntitySet="Vehicles" />
+            <End Role="Waybills" EntitySet="Waybills" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="dbFuelManagmentModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Driver">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="70" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Waybills" Relationship="Self.FK_Waybills_Drivers" FromRole="Drivers" ToRole="Waybills" />
+          <NavigationProperty Name="FuelCards" Relationship="dbFuelManagmentModel.FK_FuelCards_Drivers" FromRole="Driver" ToRole="FuelCard" />
+        </EntityType>
+        <EntityType Name="FillOnCard">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="WaybillId" Type="Int32" Nullable="false" />
+          <Property Name="DriverName" Type="String" MaxLength="70" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="FuelCount" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="DiselPrice" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="Date" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="VehicleLicensePlate" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="GasStationId" Type="Int32" Nullable="false" />
+          <Property Name="Amount" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
+          <NavigationProperty Name="GasStation" Relationship="Self.FK_FillOnCards_GasStations" FromRole="FillOnCards" ToRole="GasStations" />
+          <NavigationProperty Name="Waybill" Relationship="Self.FK_FillOnCards_Waybills" FromRole="FillOnCards" ToRole="Waybills" />
+        </EntityType>
+        <EntityType Name="FuelCard">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="BeginDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="EndDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="PinCode" Type="Decimal" Precision="4" Scale="0" Nullable="false" />
+          <Property Name="DriverId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Driver" Relationship="dbFuelManagmentModel.FK_FuelCards_Drivers" FromRole="FuelCard" ToRole="Driver" />
+        </EntityType>
+        <EntityType Name="FuelCompany">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="DiselPrice" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
+          <NavigationProperty Name="GasStations" Relationship="Self.FK_GasStations_FuelCompanies" FromRole="FuelCompanies" ToRole="GasStations" />
+        </EntityType>
+        <EntityType Name="GasStation">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Address" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="FuelCompanyId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="FillOnCards" Relationship="Self.FK_FillOnCards_GasStations" FromRole="GasStations" ToRole="FillOnCards" />
+          <NavigationProperty Name="FuelCompany" Relationship="Self.FK_GasStations_FuelCompanies" FromRole="GasStations" ToRole="FuelCompanies" />
+        </EntityType>
+        <EntityType Name="sysdiagram">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Login" Type="String" MaxLength="15" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="Password" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Role" Type="String" MaxLength="25" FixedLength="false" Unicode="true" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Vehicle">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="LicensePlate" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Brand" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="FuelConsumption" Type="Decimal" Precision="12" Scale="2" Nullable="false" />
+          <NavigationProperty Name="Waybills" Relationship="Self.FK_Waybills_Vehicles" FromRole="Vehicles" ToRole="Waybills" />
+        </EntityType>
+        <EntityType Name="Waybill">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Number" Type="Int32" Nullable="false" />
+          <Property Name="Date" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="DateOfCompletion" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="VehicleId" Type="Int32" Nullable="false" />
+          <Property Name="DriverId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Driver" Relationship="Self.FK_Waybills_Drivers" FromRole="Waybills" ToRole="Drivers" />
+          <NavigationProperty Name="FillOnCards" Relationship="Self.FK_FillOnCards_Waybills" FromRole="Waybills" ToRole="FillOnCards" />
+          <NavigationProperty Name="Vehicle" Relationship="Self.FK_Waybills_Vehicles" FromRole="Waybills" ToRole="Vehicles" />
+        </EntityType>
+        <Association Name="FK_Waybills_Drivers">
+          <End Role="Drivers" Type="Self.Driver" Multiplicity="1" />
+          <End Role="Waybills" Type="Self.Waybill" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Drivers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Waybills">
+              <PropertyRef Name="DriverId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FillOnCards_GasStations">
+          <End Role="GasStations" Type="Self.GasStation" Multiplicity="1" />
+          <End Role="FillOnCards" Type="Self.FillOnCard" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="GasStations">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="FillOnCards">
+              <PropertyRef Name="GasStationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FillOnCards_Waybills">
+          <End Role="Waybills" Type="Self.Waybill" Multiplicity="1" />
+          <End Role="FillOnCards" Type="Self.FillOnCard" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Waybills">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="FillOnCards">
+              <PropertyRef Name="WaybillId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_GasStations_FuelCompanies">
+          <End Role="FuelCompanies" Type="Self.FuelCompany" Multiplicity="1" />
+          <End Role="GasStations" Type="Self.GasStation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FuelCompanies">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="GasStations">
+              <PropertyRef Name="FuelCompanyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Waybills_Vehicles">
+          <End Role="Vehicles" Type="Self.Vehicle" Multiplicity="1" />
+          <End Role="Waybills" Type="Self.Waybill" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Vehicles">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Waybills">
+              <PropertyRef Name="VehicleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="dbFuelManagmentEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Drivers" EntityType="Self.Driver" />
+          <EntitySet Name="FillOnCards" EntityType="Self.FillOnCard" />
+          <EntitySet Name="FuelCards" EntityType="Self.FuelCard" />
+          <EntitySet Name="FuelCompanies" EntityType="Self.FuelCompany" />
+          <EntitySet Name="GasStations" EntityType="Self.GasStation" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
+          <EntitySet Name="Users" EntityType="Self.User" />
+          <EntitySet Name="Vehicles" EntityType="Self.Vehicle" />
+          <EntitySet Name="Waybills" EntityType="Self.Waybill" />
+          <AssociationSet Name="FK_Waybills_Drivers" Association="Self.FK_Waybills_Drivers">
+            <End Role="Drivers" EntitySet="Drivers" />
+            <End Role="Waybills" EntitySet="Waybills" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FillOnCards_GasStations" Association="Self.FK_FillOnCards_GasStations">
+            <End Role="GasStations" EntitySet="GasStations" />
+            <End Role="FillOnCards" EntitySet="FillOnCards" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FillOnCards_Waybills" Association="Self.FK_FillOnCards_Waybills">
+            <End Role="Waybills" EntitySet="Waybills" />
+            <End Role="FillOnCards" EntitySet="FillOnCards" />
+          </AssociationSet>
+          <AssociationSet Name="FK_GasStations_FuelCompanies" Association="Self.FK_GasStations_FuelCompanies">
+            <End Role="FuelCompanies" EntitySet="FuelCompanies" />
+            <End Role="GasStations" EntitySet="GasStations" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Waybills_Vehicles" Association="Self.FK_Waybills_Vehicles">
+            <End Role="Vehicles" EntitySet="Vehicles" />
+            <End Role="Waybills" EntitySet="Waybills" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FuelCards_Drivers" Association="dbFuelManagmentModel.FK_FuelCards_Drivers">
+            <End Role="Driver" EntitySet="Drivers" />
+            <End Role="FuelCard" EntitySet="FuelCards" />
+          </AssociationSet>
+        </EntityContainer>
+        <Association Name="FK_FuelCards_Drivers">
+          <End Type="dbFuelManagmentModel.Driver" Role="Driver" Multiplicity="1" />
+          <End Type="dbFuelManagmentModel.FuelCard" Role="FuelCard" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Driver">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="FuelCard">
+              <PropertyRef Name="DriverId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Хранилище dbFuelManagmentModelContainer" CdmEntityContainer="dbFuelManagmentEntities">
+          <EntitySetMapping Name="Drivers">
+            <EntityTypeMapping TypeName="dbFuelManagmentModel.Driver">
+              <MappingFragment StoreEntitySet="Drivers">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FillOnCards">
+            <EntityTypeMapping TypeName="dbFuelManagmentModel.FillOnCard">
+              <MappingFragment StoreEntitySet="FillOnCards">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="WaybillId" ColumnName="WaybillId" />
+                <ScalarProperty Name="DriverName" ColumnName="DriverName" />
+                <ScalarProperty Name="FuelCount" ColumnName="FuelCount" />
+                <ScalarProperty Name="DiselPrice" ColumnName="DiselPrice" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="VehicleLicensePlate" ColumnName="VehicleLicensePlate" />
+                <ScalarProperty Name="GasStationId" ColumnName="GasStationId" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FuelCards">
+            <EntityTypeMapping TypeName="dbFuelManagmentModel.FuelCard">
+              <MappingFragment StoreEntitySet="FuelCards">
+                <ScalarProperty Name="DriverId" ColumnName="DriverId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="BeginDate" ColumnName="BeginDate" />
+                <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+                <ScalarProperty Name="PinCode" ColumnName="PinCode" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FuelCompanies">
+            <EntityTypeMapping TypeName="dbFuelManagmentModel.FuelCompany">
+              <MappingFragment StoreEntitySet="FuelCompanies">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="DiselPrice" ColumnName="DiselPrice" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="GasStations">
+            <EntityTypeMapping TypeName="dbFuelManagmentModel.GasStation">
+              <MappingFragment StoreEntitySet="GasStations">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="FuelCompanyId" ColumnName="FuelCompanyId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="dbFuelManagmentModel.sysdiagram">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="dbFuelManagmentModel.User">
+              <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Login" ColumnName="Login" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Role" ColumnName="Role" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Vehicles">
+            <EntityTypeMapping TypeName="dbFuelManagmentModel.Vehicle">
+              <MappingFragment StoreEntitySet="Vehicles">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="LicensePlate" ColumnName="LicensePlate" />
+                <ScalarProperty Name="Brand" ColumnName="Brand" />
+                <ScalarProperty Name="FuelConsumption" ColumnName="FuelConsumption" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Waybills">
+            <EntityTypeMapping TypeName="dbFuelManagmentModel.Waybill">
+              <MappingFragment StoreEntitySet="Waybills">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Number" ColumnName="Number" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="DateOfCompletion" ColumnName="DateOfCompletion" />
+                <ScalarProperty Name="VehicleId" ColumnName="VehicleId" />
+                <ScalarProperty Name="DriverId" ColumnName="DriverId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Нет" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
