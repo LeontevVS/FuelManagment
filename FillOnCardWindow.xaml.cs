@@ -53,7 +53,9 @@ namespace FuelManagment
         {
             StringBuilder errors = new StringBuilder();
 
-            if (string.IsNullOrWhiteSpace(tbFuelCount.Text) && !decimal.TryParse(tbFuelCount.Text, out decimal fuelCount) && fuelCount <= 0)
+            decimal fuelCount;
+
+            if (string.IsNullOrWhiteSpace(tbFuelCount.Text) && !decimal.TryParse(tbFuelCount.Text, out fuelCount) && fuelCount <= 0)
                 errors.AppendLine("Укажите количество топлива");
             if (string.IsNullOrWhiteSpace(cbGasStation.Text))
                 errors.AppendLine("Укажите заправку");

@@ -17,14 +17,8 @@ namespace FuelManagment
         public int Id { get; set; }
         public int WaybillId { get; set; }
         public string DriverName { get; set; }
-
-        private decimal _fuelCount;
-
         public decimal FuelCount { get; set; }
-
-        private decimal _diselPrice;
         public decimal DiselPrice { get; set; }
-
         public System.DateTime Date { get; set; }
         public string VehicleLicensePlate { get; set; }
         public int GasStationId { get; set; }
@@ -34,10 +28,10 @@ namespace FuelManagment
 
         public void SetProps()
         {
+            DiselPrice = GasStation.FuelCompany.DiselPrice;
             Amount = FuelCount * DiselPrice;
             DriverName = Waybill.Driver.Name;
             VehicleLicensePlate = Waybill.Vehicle.LicensePlate;
-            DiselPrice = GasStation.FuelCompany.DiselPrice;
         }
     }
 }
